@@ -2,10 +2,6 @@
 
 source 020-shell-script-variables.sh.inc
 
-RESOURCE_GROUP_NAME="$PROJECT_NAME-tfstate-rg"
-# Following var value MUST be max 24 chars and include only lowercase letters and numbers
-STORAGE_ACCOUNT_NAME="${PROJECT_NAME}tfstate"
-
 # Create Resource Group
 echo "Creating Resource Group $RESOURCE_GROUP_NAME in region $PROJECT_REGION ..."
 az group create -l $PROJECT_REGION -n $RESOURCE_GROUP_NAME
