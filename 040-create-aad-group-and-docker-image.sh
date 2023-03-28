@@ -18,8 +18,10 @@ az ad group member add --group $AKS_AAD_GROUP_NAME --member-id $CURRENT_USER_OBJ
 echo "Building Docker image that will be pushed to the ACR ..."
 docker build --platform=linux/amd64 -t uberapp Docker
 
-# Replace placeholder values in base.auto.tfvars
+# Replace placeholder values in misc files
 echo "Replacing placeholder values in base.auto.tfvars ..."
 sed -i "" "s/PROJECT_NAME/$PROJECT_NAME/"         base.auto.tfvars
 sed -i "" "s/PROJECT_REGION/$PROJECT_REGION/"     base.auto.tfvars
 sed -i "" "s/AKS_AAD_GROUP_ID/$AKS_AAD_GROUP_ID/" base.auto.tfvars
+echo "Replacing placeholder values in deployment.yml ..."
+sed -i "" "s/PROJECT_NAME/$PROJECT_NAME/"         deployment.yml
