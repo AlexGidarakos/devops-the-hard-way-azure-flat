@@ -27,3 +27,16 @@ override.tf.json
 
 # Include tfplan files to ignore the plan output of command: terraform plan -out=tfplan
 # example: *tfplan*
+*tfplan*
+
+# Lock file
+.terraform.lock.hcl
+
+# AWS Access Keys CSV
+*accessKeys.csv*
+
+# macOS DS Store files
+.DS_Store
+
+# Add custom string suffix to files or directories to ignore
+*-gitignore
