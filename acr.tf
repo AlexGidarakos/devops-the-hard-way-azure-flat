@@ -11,4 +11,8 @@ resource "azurerm_container_registry" "acr" {
   location            = azurerm_resource_group.acr_resource_group.location
   sku                 = "Standard"
   admin_enabled       = false
+
+  provisioner "local-exec" {
+    command = "az acr login --name ${self.name} && docker tag uberapp ${self.login_server}/uberapp:v1 && docker push ${self.login_server}/uberapp:v1"
+  }
 }
