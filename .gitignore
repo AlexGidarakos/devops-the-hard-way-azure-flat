@@ -39,4 +39,4 @@ override.tf.json
 .DS_Store
 
 # Add custom string suffix to files or directories to ignore
-*-gitignore
+*-gitignore*
