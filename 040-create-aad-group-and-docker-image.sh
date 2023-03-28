@@ -15,3 +15,7 @@ echo "AZURE_GROUP_ID=$AZURE_GROUP_ID" > 050-AZURE-GROUP-ID.sh.inc
 # Add Current az login user to Azure AD Group
 echo "Adding current az login user $CURRENT_USER_OBJECTID to the Azure AD Group ..."
 az ad group member add --group $AZURE_AD_GROUP_NAME --member-id $CURRENT_USER_OBJECTID
+
+# Build Docker image to push to the ACR later
+echo "Building Docker image that will be pushed to the ACR  ..."
+docker build --platform=linux/amd64 -t uberapp Docker
