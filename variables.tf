@@ -1,3 +1,4 @@
+# Start section: Base variables
 variable "name" {
   type        = string
   description = "Name for resources"
@@ -7,7 +8,9 @@ variable "location" {
   type        = string
   description = "Azure Location of resources"
 }
+# End section: Base variables
 
+# Start section: network.tf variables
 variable "network_address_space" {
   type        = string
   description = "Azure VNET Address Space"
@@ -32,3 +35,34 @@ variable "subnet_address_prefix" {
   type        = string
   description = "Subnet Address Space"
 }
+# End section: network.tf variables
+
+# Start section: aks.tf variables
+variable "addons" {
+  description = "Defines which addons will be activated."
+
+  type = object({
+    oms_agent                   = bool
+    ingress_application_gateway = bool
+  })
+}
+
+variable "kubernetes_cluster_rbac_enabled" {
+  default = "true"
+}
+
+variable "kubernetes_version" {
+}
+
+variable "agent_count" {
+}
+
+variable "vm_size" {
+}
+
+variable "ssh_public_key" {
+}
+
+variable "aks_admins_group_object_id" {
+}
+# End section: aks.tf variables
