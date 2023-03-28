@@ -20,7 +20,7 @@ az ad group member add --group $AZURE_AD_GROUP_NAME --member-id $CURRENT_USER_OB
 echo "Building Docker image that will be pushed to the ACR  ..."
 docker build --platform=linux/amd64 -t uberapp Docker
 
-# Replace placeholder values in variables.tf
-echo "Replacing placeholder values in variables.tf ..."
-sed -i "" "s/PROJECT_NAME/$PROJECT_NAME/"     variables.tf
-sed -i "" "s/PROJECT_REGION/$PROJECT_REGION/" variables.tf
+# Replace placeholder values in terraform.tfvars
+echo "Replacing placeholder values in terraform.tfvars ..."
+sed -i "" "s/PROJECT_NAME/$PROJECT_NAME/"     terraform.tfvars
+sed -i "" "s/PROJECT_REGION/$PROJECT_REGION/" terraform.tfvars
