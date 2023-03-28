@@ -55,7 +55,10 @@ resource "azurerm_kubernetes_cluster" "k8s" {
   }
 
   provisioner "local-exec" {
-    command = "az aks get-credentials -g ${self.resource_group_name} -n ${self.name} && kubelogin convert-kubeconfig -l azurecli"
+    command = <<EOT
+      az aks get-credentials -g ${self.resource_group_name} -n ${self.name} && \
+      kubelogin convert-kubeconfig -l azurecli
+      EOT
   }
 }
 
@@ -79,6 +82,9 @@ resource "azurerm_role_assignment" "acr_pull" {
   # depends_on = [azurerm_kubernetes_cluster.k8s]
 
   provisioner "local-exec" {
-    command = "kubectl create -f deployment.yml"
+    command = <<EOT
+      kubectl create -f deployment.yml && \
+      watch -g -n 15 -p -q 40 kubectl get ingress uber-ui -o=custom-columns=IP:.status.loadBalancer.ingress
+      EOT
   }
 }

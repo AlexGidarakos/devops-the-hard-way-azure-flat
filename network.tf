@@ -14,7 +14,7 @@ resource "azurerm_subnet" "aks_subnet" {
   address_prefixes     = [var.aks_subnet_address_prefix]
 }
 
-# The subnet for the application
+# The subnet for the AKS cluster's ingress application gateway
 resource "azurerm_subnet" "app_gwsubnet" {
   name                 = var.subnet_address_name
   resource_group_name  = azurerm_resource_group.main_rg.name
