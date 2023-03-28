@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-REQUIREMENTS="az terraform docker kubelogin kubectl"
+REQUIREMENTS="az terraform docker kubelogin kubectl watch"
 
 for i in $REQUIREMENTS
 do
