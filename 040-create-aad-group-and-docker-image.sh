@@ -21,6 +21,6 @@ echo "Building Docker image that will be pushed to the ACR  ..."
 docker build --platform=linux/amd64 -t uberapp Docker
 
 # Replace placeholder values in terraform.tfvars
-echo "Replacing placeholder values in terraform.tfvars ..."
-sed -i "" "s/PROJECT_NAME/$PROJECT_NAME/"     terraform.tfvars
-sed -i "" "s/PROJECT_REGION/$PROJECT_REGION/" terraform.tfvars
+echo "Replacing placeholder values in base.auto.tfvars ..."
+sed -i "" "s/PROJECT_NAME/$PROJECT_NAME/"     base.auto.tfvars
+sed -i "" "s/PROJECT_REGION/$PROJECT_REGION/" base.auto.tfvars
