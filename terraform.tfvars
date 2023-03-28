@@ -1,9 +1,3 @@
-# Basename for resources
-name = "PROJECT_NAME"
-
-# Azure Location of resources
-location = "PROJECT_REGION"
-
 # Azure VNET Address Space
 network_address_space = "192.168.0.0/16"
 
