@@ -5,4 +5,5 @@ PROJECT_REGION="uksouth"
 TFSTATE_RESOURCE_GROUP_NAME="$PROJECT_NAME-tfstate-rg"
 # Following var value MUST be max 24 chars and include only lowercase letters and numbers
 STORAGE_ACCOUNT_NAME="${PROJECT_NAME}tfstate"
+STORAGE_CONTAINER_NAME="tfstate"
 RESOURCE_GROUP_NAME="$PROJECT_NAME-rg"

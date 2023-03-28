@@ -12,4 +12,4 @@ az storage account create -n $STORAGE_ACCOUNT_NAME -g $TFSTATE_RESOURCE_GROUP_NA
 
 # Create Storage Account blob
 echo "Creating Storage Account blob ..."
-az storage container create  --name tfstate --account-name $STORAGE_ACCOUNT_NAME
+az storage container create  --name $STORAGE_CONTAINER_NAME --account-name $STORAGE_ACCOUNT_NAME
