@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source 010-shell-script-variables.sh.inc
+source 020-shell-script-variables.sh.inc
 
 RESOURCE_GROUP_NAME="$PROJECT_NAME-tfstate-rg"
 # Following var value MUST be max 24 chars and include only lowercase letters and numbers
