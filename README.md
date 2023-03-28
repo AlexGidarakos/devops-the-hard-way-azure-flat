@@ -1,1 +1,0 @@
-# week6-devops-the-hard-way-azure
