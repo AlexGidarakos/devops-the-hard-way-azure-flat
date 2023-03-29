@@ -59,7 +59,7 @@ echo "Replacing placeholder values in deployment.yml ..."
 sed -i "" "s/PROJECT_NAME/$PROJECT_NAME/"         deployment.yml
 
 # Create Service Principal for CI/CD and store relevant secrets in Git-ignored file
-AZ_AD_SP_OUTPUT=$(az ad sp create-for-rbac --name alexgdevopshard)
+AZ_AD_SP_OUTPUT=$(az ad sp create-for-rbac --name $PROJECT_NAME)
 AZURE_AD_CLIENT_ID=$(echo "$AZ_AD_SP_OUTPUT" | grep appId | cut -d\" -f4)
 AZURE_AD_CLIENT_SECRET=$(echo "$AZ_AD_SP_OUTPUT" | grep password | cut -d\" -f4)
 AZURE_AD_TENANT_ID=$(echo "$AZ_AD_SP_OUTPUT" | grep tenant | cut -d\" -f4)
