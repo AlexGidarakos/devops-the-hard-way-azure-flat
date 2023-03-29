@@ -57,3 +57,16 @@ sed -i "" "s/PROJECT_REGION/$PROJECT_REGION/"     base.auto.tfvars
 sed -i "" "s/AKS_AAD_GROUP_ID/$AKS_AAD_GROUP_ID/" base.auto.tfvars
 echo "Replacing placeholder values in deployment.yml ..."
 sed -i "" "s/PROJECT_NAME/$PROJECT_NAME/"         deployment.yml
+
+# Create Service Principal for CI/CD and store relevant secrets in Git-ignored file
+AZ_AD_SP_OUTPUT=$(az ad sp create-for-rbac --name alexgdevopshard)
+AZURE_AD_CLIENT_ID=$(echo "$AZ_AD_SP_OUTPUT" | grep appId | cut -d\" -f4)
+AZURE_AD_CLIENT_SECRET=$(echo "$AZ_AD_SP_OUTPUT" | grep password | cut -d\" -f4)
+AZURE_AD_TENANT_ID=$(echo "$AZ_AD_SP_OUTPUT" | grep tenant | cut -d\" -f4)
+AZURE_SUBSCRIPTION_ID=$(az account show --query id --output tsv)
+echo -e \
+  "AZURE_AD_CLIENT_ID=$AZURE_AD_CLIENT_ID" \
+  "\nAZURE_AD_CLIENT_SECRET=$AZURE_AD_CLIENT_SECRET" \
+  "\nAZURE_AD_TENANT_ID=$AZURE_AD_TENANT_ID" \
+  "\nAZURE_SUBSCRIPTION_ID=$AZURE_SUBSCRIPTION_ID" \
+  > cicdsecrets-gitignore.txt
