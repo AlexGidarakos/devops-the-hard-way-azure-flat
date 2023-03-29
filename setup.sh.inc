@@ -1,6 +1,8 @@
+REQUIREMENTS="az terraform docker kubelogin kubectl"
 PROJECT_BASENAME="devopshard"
 PROJECT_PREFIX="alexg"
 PROJECT_NAME="${PROJECT_PREFIX}${PROJECT_BASENAME}"
+AKS_AAD_GROUP_NAME="$PROJECT_NAME-aks-group"
 PROJECT_REGION="uksouth"
 TFSTATE_RESOURCE_GROUP_NAME="$PROJECT_NAME-tfstate-rg"
 # Following var value MUST be max 24 chars and include only lowercase letters and numbers

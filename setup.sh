@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+
+source setup.sh.inc
+
+# Check for required binaries
+NOTFOUND=1
+for i in $REQUIREMENTS;
+do
+  which $i > /dev/null
+
+  if [[ $? -eq 0 ]]; then
+    echo "$i found"
+  else
+    echo "$i not found in PATH"; NOTFOUND=0
+  fi
+done
+((!NOTFOUND)) && echo -e "Please install and/or add unmet requirements to the PATH variable and try again" && exit 1
+
+# Create Resource Group
+echo "Creating Resource Group $TFSTATE_RESOURCE_GROUP_NAME in region $PROJECT_REGION ..."
+az group create -l $PROJECT_REGION -n $TFSTATE_RESOURCE_GROUP_NAME
+
+# Create Storage Account
+echo "Creating Storage Account $STORAGE_ACCOUNT_NAME ..."
+az storage account create -n $STORAGE_ACCOUNT_NAME -g $TFSTATE_RESOURCE_GROUP_NAME -l $PROJECT_REGION --sku Standard_LRS
+
+# Create Storage Account blob
+echo "Creating Storage Account blob ..."
+az storage container create --name $STORAGE_CONTAINER_NAME --account-name $STORAGE_ACCOUNT_NAME
+
+# Replace placeholder backend config values in providers.tf
+echo "Replacing placeholder backend config values in providers.tf ..."
+sed -i "" "s/TFSTATE_RESOURCE_GROUP_NAME/$TFSTATE_RESOURCE_GROUP_NAME/" providers.tf
+sed -i "" "s/STORAGE_ACCOUNT_NAME/$STORAGE_ACCOUNT_NAME/"               providers.tf
+sed -i "" "s/STORAGE_CONTAINER_NAME/$STORAGE_CONTAINER_NAME/"           providers.tf
+sed -i "" "s/TFSTATE_FILENAME/$TFSTATE_FILENAME/"                       providers.tf
+
+CURRENT_USER_OBJECTID=$(az ad signed-in-user show --query id -o tsv)
+
+# Create Azure AD Group for AKS admins
+echo "Creating Azure AD Group for AKS admins $AKS_AAD_GROUP_NAME ..."
+az ad group create --display-name $AKS_AAD_GROUP_NAME --mail-nickname $AKS_AAD_GROUP_NAME
+AKS_AAD_GROUP_ID=$(az ad group show --group "$AKS_AAD_GROUP_NAME" --query id -o tsv)
+
+# Add Current az login user to Azure AD Group
+echo "Adding current az login user $CURRENT_USER_OBJECTID to the Azure AD Group ..."
+az ad group member add --group $AKS_AAD_GROUP_NAME --member-id $CURRENT_USER_OBJECTID
+
+# Build Docker image to push to the ACR later
+echo "Building Docker image that will be pushed to the ACR ..."
+docker build --platform=linux/amd64 -t uberapp Docker
+
+# Replace placeholder values in misc files
+echo "Replacing placeholder values in base.auto.tfvars ..."
+sed -i "" "s/PROJECT_NAME/$PROJECT_NAME/"         base.auto.tfvars
+sed -i "" "s/PROJECT_REGION/$PROJECT_REGION/"     base.auto.tfvars
+sed -i "" "s/AKS_AAD_GROUP_ID/$AKS_AAD_GROUP_ID/" base.auto.tfvars
+echo "Replacing placeholder values in deployment.yml ..."
+sed -i "" "s/PROJECT_NAME/$PROJECT_NAME/"         deployment.yml
