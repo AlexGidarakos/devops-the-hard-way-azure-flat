@@ -56,7 +56,7 @@ resource "azurerm_kubernetes_cluster" "k8s" {
 
   provisioner "local-exec" {
     command = <<EOT
-      az aks get-credentials -g ${self.resource_group_name} -n ${self.name} && \
+      az aks get-credentials -g ${self.resource_group_name} -n ${self.name} --overwrite-existing && \
       kubelogin convert-kubeconfig -l azurecli
       EOT
   }
@@ -65,26 +65,24 @@ resource "azurerm_kubernetes_cluster" "k8s" {
 # Access the Resource Group created automatically for the AKS nodes
 data "azurerm_resource_group" "node_resource_group" {
   name = azurerm_kubernetes_cluster.k8s.node_resource_group
-  # depends_on = [azurerm_kubernetes_cluster.k8s]
 }
 
 resource "azurerm_role_assignment" "node_infrastructure_update_scale_set" {
   principal_id         = azurerm_kubernetes_cluster.k8s.kubelet_identity[0].object_id
   scope                = data.azurerm_resource_group.node_resource_group.id
   role_definition_name = "Virtual Machine Contributor"
-  # depends_on = [azurerm_kubernetes_cluster.k8s]
 }
 
 resource "azurerm_role_assignment" "acr_pull" {
   principal_id         = azurerm_kubernetes_cluster.k8s.kubelet_identity[0].object_id
   scope                = azurerm_resource_group.main_rg.id
-  role_definition_name = "acrpull"
-  # depends_on = [azurerm_kubernetes_cluster.k8s]
+  role_definition_name = "AcrPull"
 
   provisioner "local-exec" {
     command = <<EOT
       kubectl create -f deployment.yml && \
-      watch -g -n 15 -p -q 40 kubectl get ingress uber-ui -o=custom-columns=IP:.status.loadBalancer.ingress
+      COUNTER=1; \
+      until (kubectl get ingress uber-ui -o yaml | grep 'ip: ') || [[ $COUNTER -gt 60 ]]; do sleep 10; ((COUNTER++)); done
       EOT
   }
 }
