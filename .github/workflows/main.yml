@@ -21,11 +21,11 @@ jobs:
     steps:
       - name: Install kubelogin
         run: |
-          sudo apt update
+          sudo apt-get update
           sudo snap install kubelogin
 
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Check prerequisites
-        run: ./setup.1.sh
+      - name: Pre-Terraform setup
+        run: ./setup.sh
