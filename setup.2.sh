@@ -2,20 +2,6 @@
 
 source setup.inc
 
-# Check for required binaries
-NOTFOUND=0
-for i in $REQUIREMENTS;
-do
-  which $i > /dev/null
-
-  if [[ $? -eq 0 ]]; then
-    echo "$i found"
-  else
-    echo "$i not found in PATH"; NOTFOUND=1
-  fi
-done
-((NOTFOUND)) && echo -e "Please install and/or add unmet requirements to the PATH variable and try again" && exit 1
-
 # Create Resource Group
 echo "Creating Resource Group $TFSTATE_RESOURCE_GROUP_NAME in region $PROJECT_REGION ..."
 az group create -l $PROJECT_REGION -n $TFSTATE_RESOURCE_GROUP_NAME
