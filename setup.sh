@@ -8,4 +8,5 @@ done
 
 ((NOTFOUND)) && { echo -e "Please install and/or add unmet requirements to the PATH variable and try again"; exit $NOTFOUND; }
 
+echo "GITHUB_ACTIONS=$GITHUB_ACTIONS"
 echo "PROJECT_PREFIX=$PROJECT_PREFIX"
