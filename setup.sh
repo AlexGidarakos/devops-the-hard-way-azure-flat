@@ -78,8 +78,12 @@ else
 fi
 
 # Replace placeholder backend config values in providers.tf
+# The FreeBSD version of sed needs a blank string passed as a value to the -i argument
+if [[ "$OSTYPE" == "darwin"* ]] || [[ "$OSTYPE" == "freebsd"* ]]; then
+  SED_BSD="\"\""
+fi
 echo "Replacing placeholder backend config values in providers.tf"
-sed -i "" "s/TFSTATE_RESOURCE_GROUP_NAME/$TFSTATE_RESOURCE_GROUP_NAME/" providers.tf
-sed -i "" "s/STORAGE_ACCOUNT_NAME/$STORAGE_ACCOUNT_NAME/" providers.tf
-sed -i "" "s/STORAGE_CONTAINER_NAME/$STORAGE_CONTAINER_NAME/" providers.tf
-sed -i "" "s/TFSTATE_FILENAME/$TFSTATE_FILENAME/" providers.tf
+sed -i $SED_BSD "s/TFSTATE_RESOURCE_GROUP_NAME/$TFSTATE_RESOURCE_GROUP_NAME/" providers.tf
+sed -i $SED_BSD "s/STORAGE_ACCOUNT_NAME/$STORAGE_ACCOUNT_NAME/" providers.tf
+sed -i $SED_BSD "s/STORAGE_CONTAINER_NAME/$STORAGE_CONTAINER_NAME/" providers.tf
+sed -i $SED_BSD "s/TFSTATE_FILENAME/$TFSTATE_FILENAME/" providers.tf
