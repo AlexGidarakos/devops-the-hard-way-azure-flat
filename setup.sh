@@ -39,6 +39,7 @@ else
       echo "Saving Service Principal authentication JSON"
       echo "$AZ_AD_SP_OUTPUT" > $CI_CD_SECRETS_FILE
       echo "Service Principal authentication JSON saved as $CI_CD_SECRETS_FILE"
+      echo "You may copy the contents into a secret in your CI solution"
     else
       echo "Error creating Service Principal for CI/CD"
       exit 2
@@ -75,3 +76,10 @@ else
   echo "Error creating Storage Container"
   exit 5
 fi
+
+# Replace placeholder backend config values in providers.tf
+echo "Replacing placeholder backend config values in providers.tf"
+sed -i "" "s/TFSTATE_RESOURCE_GROUP_NAME/$TFSTATE_RESOURCE_GROUP_NAME/" providers.tf
+sed -i "" "s/STORAGE_ACCOUNT_NAME/$STORAGE_ACCOUNT_NAME/" providers.tf
+sed -i "" "s/STORAGE_CONTAINER_NAME/$STORAGE_CONTAINER_NAME/" providers.tf
+sed -i "" "s/TFSTATE_FILENAME/$TFSTATE_FILENAME/" providers.tf
