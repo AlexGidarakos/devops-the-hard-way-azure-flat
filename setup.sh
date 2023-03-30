@@ -45,3 +45,33 @@ else
     fi
   fi
 fi
+
+# Create Resource Group
+echo "Creating Resource Group $TFSTATE_RESOURCE_GROUP_NAME in region $PROJECT_REGION"
+az group create -l $PROJECT_REGION -n $TFSTATE_RESOURCE_GROUP_NAME
+if [[ $? -eq 0 ]]; then
+  echo "Resource Group created successfully"
+else
+  echo "Error creating Resource Group"
+  exit 3
+fi
+
+# Create Storage Account
+echo "Creating Storage Account $STORAGE_ACCOUNT_NAME"
+az storage account create -n $STORAGE_ACCOUNT_NAME -g $TFSTATE_RESOURCE_GROUP_NAME -l $PROJECT_REGION --sku Standard_LRS
+if [[ $? -eq 0 ]]; then
+  echo "Storage Account created successfully"
+else
+  echo "Error creating Storage Account"
+  exit 4
+fi
+
+# Create Storage Container
+echo "Creating Storage Container $STORAGE_CONTAINER_NAME"
+az storage container create --name $STORAGE_CONTAINER_NAME --account-name $STORAGE_ACCOUNT_NAME
+if [[ $? -eq 0 ]]; then
+  echo "Storage Container created successfully"
+else
+  echo "Error creating Storage Container"
+  exit 5
+fi
