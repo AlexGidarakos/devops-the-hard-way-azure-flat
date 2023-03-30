@@ -96,7 +96,7 @@ fi
 
 # Create Azure AD Group for AKS admins and add current az login user to it
 echo "Retrieving current az login user ID"
-CURRENT_USER_OBJECTID=$(az ad signed-in-user show --query id -o tsv)
+CURRENT_USER_OBJECTID=$(az account show --query id -o tsv)
 if [[ $? -eq 0 ]]; then
   echo "User ID $CURRENT_USER_OBJECTID retrieved successfully"
 else
