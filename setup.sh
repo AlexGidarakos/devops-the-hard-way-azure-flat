@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source setup.sh.inc
+source setup.inc
 
 # Check for required binaries
 NOTFOUND=0
