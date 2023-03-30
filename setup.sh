@@ -87,3 +87,43 @@ sed -i $SED_BSD "s/TFSTATE_RESOURCE_GROUP_NAME/$TFSTATE_RESOURCE_GROUP_NAME/" pr
 sed -i $SED_BSD "s/STORAGE_ACCOUNT_NAME/$STORAGE_ACCOUNT_NAME/" providers.tf
 sed -i $SED_BSD "s/STORAGE_CONTAINER_NAME/$STORAGE_CONTAINER_NAME/" providers.tf
 sed -i $SED_BSD "s/TFSTATE_FILENAME/$TFSTATE_FILENAME/" providers.tf
+if [[ $? -eq 0 ]]; then
+  echo "Placeholder backend config values replaced successfully"
+else
+  echo "Error replacing placeholder backend config values"
+  exit 6
+fi
+
+# Create Azure AD Group for AKS admins and add current az login user to it
+echo "Retrieving current az login user ID"
+CURRENT_USER_OBJECTID=$(az ad signed-in-user show --query id -o tsv)
+if [[ $? -eq 0 ]]; then
+  echo "User ID $CURRENT_USER_OBJECTID retrieved successfully"
+else
+  echo "Error retrieving user ID"
+  exit 7
+fi
+echo "Creating Azure AD Group for AKS admins $AKS_AAD_GROUP_NAME"
+az ad group create --display-name $AKS_AAD_GROUP_NAME --mail-nickname $AKS_AAD_GROUP_NAME
+if [[ $? -eq 0 ]]; then
+  echo "Group created successfully"
+else
+  echo "Error creating group"
+  exit 8
+fi
+echo "Retrieving group ID"
+AKS_AAD_GROUP_ID=$(az ad group show --group "$AKS_AAD_GROUP_NAME" --query id -o tsv)
+if [[ $? -eq 0 ]]; then
+  echo "Group ID retrieved successfully"
+else
+  echo "Error retrieving group ID"
+  exit 9
+fi
+echo "Adding current az login user to the group"
+az ad group member add --group $AKS_AAD_GROUP_NAME --member-id $CURRENT_USER_OBJECTID
+if [[ $? -eq 0 ]]; then
+  echo "User added successfully"
+else
+  echo "Error adding user"
+  exit 10
+fi

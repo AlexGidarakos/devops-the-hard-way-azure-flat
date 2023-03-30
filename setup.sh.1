@@ -1,13 +1,6 @@
 #!/usr/bin/env bash
 source setup.inc.sh
 
-# Replace placeholder backend config values in providers.tf
-echo "Replacing placeholder backend config values in providers.tf ..."
-sed -i "" "s/TFSTATE_RESOURCE_GROUP_NAME/$TFSTATE_RESOURCE_GROUP_NAME/" providers.tf
-sed -i "" "s/STORAGE_ACCOUNT_NAME/$STORAGE_ACCOUNT_NAME/"               providers.tf
-sed -i "" "s/STORAGE_CONTAINER_NAME/$STORAGE_CONTAINER_NAME/"           providers.tf
-sed -i "" "s/TFSTATE_FILENAME/$TFSTATE_FILENAME/"                       providers.tf
-
 CURRENT_USER_OBJECTID=$(az ad signed-in-user show --query id -o tsv)
 
 # Create Azure AD Group for AKS admins
