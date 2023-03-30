@@ -1,11 +1,11 @@
 REQUIREMENTS="az terraform docker kubelogin kubectl"
 PROJECT_BASENAME="devopshard"
-PROJECT_PREFIX="yourname"
+PROJECT_PREFIX="myname"
 
 # Check if running within a GitHub Actions runner
 # Based on https://docs.github.com/en/actions/learn-github-actions/variables#default-environment-variables
-# If true, set project prefix to gha
-[[ "$GITHUB_ACTIONS" == "true" ]] && PROJECT_PREFIX="gha"
+# If true, prepend a "gh" string to the project prefix
+[[ "$GITHUB_ACTIONS" == "true" ]] && PROJECT_PREFIX="gh{$PROJECT_PREFIX}"
 
 PROJECT_REGION="uksouth"
 STORAGE_CONTAINER_NAME="tfstate"
