@@ -6,10 +6,12 @@ NOTFOUND=false
 for i in $REQUIREMENTS; do
   which $i > /dev/null && echo "$i found" || { echo "$i not found in PATH"; NOTFOUND=true; }
 done
-[[ "$NOTFOUND" == "true" ]] && {
-  echo "Please install and/or add unmet requirements to the PATH variable and try again";
-  exit 1;
-}
+if [[ "$NOTFOUND" == "true" ]]; then
+  echo "Please install and/or add unmet requirements to the PATH variable and try again"
+  exit 1
+else
+  echo "All requirements met, proceeding..."
+fi
 
 # If not running via GH Actions and secrets file is not present, then create a
 # Service Principal for CI/CD and store relevant secrets in a Git-ignored file
