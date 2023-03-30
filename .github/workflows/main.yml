@@ -21,7 +21,9 @@ jobs:
           creds: ${{ secrets.AZ_CREDS }}
 
       - name: Install kubelogin
-        run: brew install Azure/kubelogin/kubelogin
+        run: |
+          sudo apt-get update
+          sudo snap install kubelogin
 
       - name: Checkout
         uses: actions/checkout@v3
