@@ -5,7 +5,7 @@ PROJECT_PREFIX="yourname"
 # Check if running within a GitHub Actions runner
 # Based on https://docs.github.com/en/actions/learn-github-actions/variables#default-environment-variables
 # If true, set project prefix to gha
-((GITHUB_ACTIONS)) && PROJECT_PREFIX="gha"
+[[ "$GITHUB_ACTIONS" == "true" ]] && PROJECT_PREFIX="gha"
 
 PROJECT_REGION="uksouth"
 STORAGE_CONTAINER_NAME="tfstate"

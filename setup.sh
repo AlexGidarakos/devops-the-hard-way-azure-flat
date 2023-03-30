@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-source setup.inc
+source setup.inc.sh
 NOTFOUND=0
 
 for i in $REQUIREMENTS; do
