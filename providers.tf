@@ -9,10 +9,10 @@ terraform {
   }
 
   backend "azurerm" {
-    resource_group_name  = "TFSTATE_RESOURCE_GROUP_NAME"
-    storage_account_name = "STORAGE_ACCOUNT_NAME"
-    container_name       = "STORAGE_CONTAINER_NAME"
-    key                  = "TFSTATE_FILENAME"
+    resource_group_name  = "alexgdevopshard-tfstate-rg"
+    storage_account_name = "alexgdevopshardtfstate"
+    container_name       = "tfstate"
+    key                  = "terraform.tfstate"
   }
 }
 
